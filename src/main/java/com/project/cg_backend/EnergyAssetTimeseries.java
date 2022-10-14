@@ -1,5 +1,7 @@
 package com.project.cg_backend;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import javax.persistence.*;
 import java.sql.Timestamp;
 
@@ -12,6 +14,7 @@ public class EnergyAssetTimeseries {
 
     private Integer assetId;
 
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss.SSS")
     private Timestamp timestamp;
 
     private Float activePower;
