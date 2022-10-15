@@ -4,14 +4,16 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.project.cg_backend.exceptions.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.sql.Timestamp;
 import java.util.List;
-import java.util.Optional;
+import java.util.UUID;
 
 @RestController
 @RequestMapping(path="/api")
@@ -20,6 +22,7 @@ public class EnergyAssetTimeseriesController {
     @Autowired
     private EnergyAssetTimeseriesRepository EatRepository;
 
+    @CachePut(value = "latest", key = "#eat.assetId")
     @PostMapping("/eat")
     public EnergyAssetTimeseries createTimeseries(@RequestBody EnergyAssetTimeseries eat) {
         return EatRepository.save(eat);
@@ -49,9 +52,16 @@ public class EnergyAssetTimeseriesController {
         return new ResponseEntity<EnergyAssetTimeseries>(HttpStatus.NO_CONTENT);
     }
 
-    @GetMapping("/eat/timeperiod")
-    public List<EnergyAssetTimeseries> getTimePeriod(@RequestBody TimePeriod data){
-        return EatRepository.findByTimePeriod(data.from, data.to);
+    @GetMapping("/eat/timeperiod/{assetId}")
+    public List<EnergyAssetTimeseries> getTimePeriod(@PathVariable UUID assetId, @RequestBody TimePeriod data){
+        return EatRepository.findByTimePeriod(assetId, data.from, data.to);
+    }
+
+    @Cacheable(value = "latest", key = "#assetId")
+    @GetMapping("/eat/latest/{assetId}")
+    public EnergyAssetTimeseries getLatest(@PathVariable UUID assetId) throws InterruptedException {
+        Thread.sleep(1000);
+        return EatRepository.getLatest(assetId);
     }
 
     static class TimePeriod {

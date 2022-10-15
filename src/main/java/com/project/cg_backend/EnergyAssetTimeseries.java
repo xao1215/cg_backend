@@ -1,18 +1,21 @@
 package com.project.cg_backend;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import org.springframework.data.redis.core.RedisHash;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.sql.Timestamp;
+import java.util.UUID;
 
 @Entity
-public class EnergyAssetTimeseries {
+public class EnergyAssetTimeseries implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
 
-    private Integer assetId;
+    private UUID assetId;
 
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss.SSS")
     private Timestamp timestamp;
@@ -29,11 +32,11 @@ public class EnergyAssetTimeseries {
         this.id = id;
     }
 
-    public Integer getAssetId() {
+    public UUID getAssetId() {
         return assetId;
     }
 
-    public void setAssetId(Integer assetId) {
+    public void setAssetId(UUID assetId) {
         this.assetId = assetId;
     }
 
