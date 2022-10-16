@@ -1,7 +1,6 @@
 package com.project.cg_backend;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import org.springframework.data.redis.core.RedisHash;
 
 import javax.persistence.*;
 import java.io.Serializable;

@@ -11,6 +11,6 @@ public interface EnergyAssetTimeseriesRepository extends CrudRepository<EnergyAs
     @Query("SELECT eat FROM EnergyAssetTimeseries eat WHERE eat.assetId = :assetId AND eat.timestamp >= :from AND eat.timestamp <= :to")
     List<EnergyAssetTimeseries> findByTimePeriod(UUID assetId, Timestamp from, Timestamp to);
 
-    @Query("SELECT eat FROM EnergyAssetTimeseries eat WHERE eat.assetId = :assetId AND timestamp = ( SELECT MAX(timestamp) FROM EnergyAssetTimeseries )")
+    @Query("SELECT eat FROM EnergyAssetTimeseries eat WHERE eat.assetId = :assetId AND eat.timestamp = ( SELECT MAX(timestamp) FROM EnergyAssetTimeseries WHERE assetId = :assetId )")
     EnergyAssetTimeseries getLatest(UUID assetId);
 }
