@@ -22,7 +22,7 @@ public class EnergyAssetTimeseriesController {
     @Autowired
     private EnergyAssetTimeseriesRepository EatRepository;
 
-    @CachePut(value = "latest", key = "#eat.assetId")
+    //@CachePut(value = "latest", key = "#eat.assetId")
     @PostMapping("/eat")
     public EnergyAssetTimeseries createTimeseries(@RequestBody EnergyAssetTimeseries eat) {
         return EatRepository.save(eat);

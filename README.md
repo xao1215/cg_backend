@@ -1,21 +1,32 @@
-# Getting Started
+Postgres and Redis Docker instances
+```
+docker run -d -e POSTGRES_PASSWORD=postgres -e POSTGRES_DB=db -p 5432:5432
+docker run -d redis -p 6379:6379
+```
+Run/test the Spring app
+```
+./mvnw spring-boot:run
+./mvnw test
+```
+Endpoints
+- http://localhost:8080/api/eat (POST)
+- http://localhost:8080/api/eat/{id} (GET, DELETE, UPDATE)
+- http://localhost:8080/api/eat/timeperiod/{assetId} (GET)
+- http://localhost:8080/api/eat/latest/{assetId} (GET)
 
-### Reference Documentation
-
-For further reference, please consider the following sections:
-
-* [Official Apache Maven documentation](https://maven.apache.org/guides/index.html)
-* [Spring Boot Maven Plugin Reference Guide](https://docs.spring.io/spring-boot/docs/2.7.4/maven-plugin/reference/html/)
-* [Create an OCI image](https://docs.spring.io/spring-boot/docs/2.7.4/maven-plugin/reference/html/#build-image)
-* [Spring Web](https://docs.spring.io/spring-boot/docs/2.7.4/reference/htmlsingle/#web)
-* [Spring Data JPA](https://docs.spring.io/spring-boot/docs/2.7.4/reference/htmlsingle/#data.sql.jpa-and-spring-data)
-
-### Guides
-
-The following guides illustrate how to use some features concretely:
-
-* [Building a RESTful Web Service](https://spring.io/guides/gs/rest-service/)
-* [Serving Web Content with Spring MVC](https://spring.io/guides/gs/serving-web-content/)
-* [Building REST services with Spring](https://spring.io/guides/tutorials/rest/)
-* [Accessing Data with JPA](https://spring.io/guides/gs/accessing-data-jpa/)
-
+POST object example
+```
+{
+    "activePower":100,
+    "voltage": 100,
+    "assetId":"fbb12efa-1954-474c-9849-d719d09f156c",
+    "timestamp": "2000-01-01 01:00:00.000"
+}
+```
+/timeperiod body
+```
+{
+    "from":"2000-01-01 01:00:00.000",
+    "to":"2100-01-01 01:00:00.000"
+}
+```
